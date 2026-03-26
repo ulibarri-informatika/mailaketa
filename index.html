@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>C1 Mailaketa proba – Ulibarri</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,serif;background:#f4f2f9;color:#2a2035;min-height:100vh}
+  input{font-family:Georgia,serif;width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #d8ceee;font-size:14px;outline:none;background:#fff;color:#2a2035}
+  button{cursor:pointer;font-family:Georgia,serif}
+
+  /* START */
+  #start{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
+  .card{background:#fff;border-radius:16px;padding:40px 36px;max-width:460px;width:100%;box-shadow:0 2px 20px rgba(0,0,0,0.07);border:1px solid #d8ceee}
+  .badge{display:inline-block;background:#ede8f7;border-radius:12px;padding:10px 18px;margin-bottom:14px;font-size:13px;font-weight:700;color:#6b4fa8;letter-spacing:1px}
+  .stats{display:flex;justify-content:center;gap:24px;background:#ede8f7;border-radius:10px;padding:14px 20px;margin-bottom:24px}
+  .stat-val{font-weight:700;font-size:18px;color:#6b4fa8;text-align:center}
+  .stat-lbl{font-size:11px;color:#7a6e8a;text-align:center}
+  .divider{width:1px;background:#c9b8ec}
+  label{font-size:13px;font-weight:600;color:#2a2035;display:block;margin-bottom:5px}
+  .field{margin-bottom:14px}
+  .error{color:#b94a6a;font-size:13px;margin-bottom:12px;background:#fceef3;padding:8px 12px;border-radius:7px}
+  .btn-primary{background:#6b4fa8;color:#fff;border:none;border-radius:10px;padding:13px 0;font-size:15px;font-weight:700;width:100%;letter-spacing:0.5px}
+  .btn-primary:hover{background:#5a3f96}
+
+  /* EXAM */
+  #exam{display:none}
+  .header{background:#fff;border-bottom:1px solid #d8ceee;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .h-title{font-weight:700;font-size:14px;color:#2a2035}
+  .h-sub{font-size:11px;color:#7a6e8a}
+  .timer{font-size:22px;font-weight:800;color:#6b4fa8;font-variant-numeric:tabular-nums;text-align:center}
+  .timer.urgent{color:#b94a6a}
+  .timer-lbl{font-size:10px;color:#7a6e8a;text-align:center}
+  .btn-sm{background:#6b4fa8;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;font-size:13px}
+  .progress-bar{height:3px;background:#ede8f7}
+  .progress-fill{height:3px;background:#6b4fa8;transition:width 0.3s}
+  .body-text{max-width:780px;margin:24px auto;background:#fff;border-radius:16px;padding:32px 36px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1px solid #d8ceee;line-height:2.1;font-size:15.5px;position:relative}
+  .gap-btn{display:inline-block;min-width:130px;padding:2px 10px;border:2px solid #d8ceee;border-radius:6px;background:#f4f2f9;color:#7a6e8a;font-weight:400;font-size:14px;font-family:Georgia,serif;vertical-align:middle;position:relative}
+  .gap-btn.selected{border-color:#6b4fa8;background:#ede8f7;color:#6b4fa8;font-weight:700}
+  .dropdown{display:none;position:absolute;top:110%;left:0;background:#fff;border:1.5px solid #c9b8ec;border-radius:10px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.10);min-width:170px;padding:5px}
+  .dropdown.open{display:block}
+  .opt{padding:8px 14px;border-radius:7px;font-size:14px;color:#2a2035;cursor:pointer}
+  .opt:hover{background:#f4f2f9}
+  .opt.active{background:#ede8f7;font-weight:700}
+  .bottom-bar{max-width:780px;margin:0 auto 40px;display:flex;justify-content:space-between;align-items:center;padding:0 4px}
+  .btn-lg{background:#6b4fa8;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-weight:700;font-size:15px}
+
+  /* RESULT */
+  #result{display:none;padding:28px 16px;min-height:100vh}
+  .res-card{background:#fff;border-radius:16px;padding:36px;text-align:center;box-shadow:0 2px 16px rgba(0,0,0,0.07);border:1px solid #d8ceee;margin-bottom:20px;max-width:700px;margin-left:auto;margin-right:auto}
+  .score-box{border-radius:12px;padding:20px;margin-bottom:16px}
+  .score-num{font-size:42px;font-weight:800;margin-bottom:6px}
+  .score-grade{font-size:17px;font-weight:700}
+  .prog{background:#f4f2f9;border-radius:8px;height:10px;overflow:hidden;margin-top:16px}
+  .prog-fill{height:10px;border-radius:8px;transition:width 1s}
+  .corrections{background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 2px 16px rgba(0,0,0,0.07);border:1px solid #d8ceee;max-width:700px;margin:0 auto}
+  .corr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:16px}
+  .corr-item{border-radius:8px;padding:9px 12px}
+  .corr-id{font-weight:700;font-size:12px;color:#7a6e8a;margin-bottom:3px}
+  .corr-wrong{font-size:12px;text-decoration:line-through}
+  .corr-right{font-size:13px;font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- START -->
+<div id="start">
+  <div class="card">
+    <div style="text-align:center;margin-bottom:24px">
+      <div class="badge">ULIBARRI EUSKALTEGIA</div>
+      <h1 style="font-size:22px;font-weight:700;margin-bottom:6px">C1 Mailaketa proba</h1>
+      <p style="color:#7a6e8a;font-size:14px;line-height:1.6">Testuko hutsuneak bete aukera anitzeko erantzunekin.</p>
+    </div>
+    <div class="stats">
+      <div><div class="stat-val">25</div><div class="stat-lbl">Galdera</div></div>
+      <div class="divider"></div>
+      <div><div class="stat-val">20'</div><div class="stat-lbl">Denbora</div></div>
+    </div>
+    <div class="field">
+      <label>Izena eta abizena *</label>
+      <input type="text" id="inp-name" placeholder="Adib.: Ane Etxebarria"/>
+    </div>
+    <div class="field" style="margin-bottom:20px">
+      <label>Helbide elektronikoa *</label>
+      <input type="email" id="inp-email" placeholder="adib.: ane@email.com"/>
+    </div>
+    <div id="form-error" class="error" style="display:none"></div>
+    <button class="btn-primary" onclick="startExam()">Hasi</button>
+  </div>
+</div>
+
+<!-- EXAM -->
+<div id="exam">
+  <div class="header">
+    <div><div class="h-title">C1 Mailaketa proba</div><div class="h-sub" id="progress-lbl">0/25 erantzunda</div></div>
+    <div><div class="timer" id="timer">20:00</div><div class="timer-lbl">geratzen da</div></div>
+    <button class="btn-sm" onclick="submitExam()">Bidali</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="body-text" id="text-body"></div>
+  <div class="bottom-bar">
+    <span style="font-size:13px;color:#7a6e8a" id="remaining-lbl">25 hutsune falta</span>
+    <button class="btn-lg" onclick="submitExam()">Bidali proba</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result">
+  <div class="res-card">
+    <div style="display:inline-block;background:#ede8f7;border-radius:8px;padding:6px 14px;margin-bottom:16px;font-size:12px;font-weight:700;color:#6b4fa8;letter-spacing:1px">ULIBARRI EUSKALTEGIA</div>
+    <h2 style="font-size:18px;font-weight:700;margin-bottom:4px">C1 Mailaketa proba — Emaitzak</h2>
+    <div id="res-user" style="color:#7a6e8a;font-size:13px;margin-bottom:20px"></div>
+    <div class="score-box" id="score-box">
+      <div class="score-num" id="score-num"></div>
+      <div class="score-grade" id="score-grade"></div>
+    </div>
+    <div class="prog"><div class="prog-fill" id="prog-fill"></div></div>
+  </div>
+  <div class="corrections">
+    <h3 style="font-size:15px;font-weight:700;color:#2a2035">Zuzenketa</h3>
+    <div class="corr-grid" id="corr-grid"></div>
+  </div>
+</div>
+
+<script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycby_vrD0wGpn_XU-NlU2D7-UL7gGej6jwFw171WriqRO3c7Jdi9kL0zfWOn1MZYRZFU/exec";
+
+const segments = [
+  {t:"text",c:"Jabego intelektualaren aurkako erasoen eta hura babesteko neurrien inguruko eztabaidak gero eta "},
+  {t:"gap",id:1},{t:"text",c:" handiagoa dute. Batzuk egile eskubideen defentsan oinarrituta, sormen lanei copyright lizentziak ezartzearen alde agertzen dira; "},
+  {t:"gap",id:2},{t:"text",c:" gero eta lagun gehiagok egiten du eredu eskuzabalagoen aldeko "},{t:"gap",id:3},{t:"text",c:"."},
+  {t:"break"},
+  {t:"text",c:"Aurrerapen teknologikoek, digitalizazioak "},{t:"gap",id:4},{t:"text",c:", eta Internetek sormen lanak kopiatzeko, zabaltzeko eta eransteko bideak izugarri erraztu dituzte. Ondorioz, autore eta erabiltzaile ugari gustura agertu da ezagutza elkarren artean banatzeko aukerak areagotu direlako; baina hori mehatxu moduan ikusten "},{t:"gap",id:5},{t:"text",c:" ere badago. Azken horiek jabetza intelektualak gero eta eraso gehiago jasaten duela diote eta egile eskubideen defentsa "},{t:"gap",id:6},{t:"text",c:", kontsumitzaileen eskubideak murrizten dituzten neurrien alde egiten dute, esaterako, autoreen eskubideak babesteko sormen lanei copyright lizentzia ezaguna ezartzearen alde."},
+  {t:"break"},
+  {t:"text",c:"Askoren ustez, ordea, copyrightak ez ditu egileen eskubideak defendatzen, multinazional handienak "},{t:"gap",id:7},{t:"text",c:". Kultura gizakiok gozatzeko sortutako ondasuna da, ez mugak jarri behar zaizkion produktua, eta, "},{t:"gap",id:8},{t:"text",c:", lizentzia horrek hori egiten omen du: bakar batzuen poltsikoak bete eta kulturara hurbiltzeko ateak itxi. "},{t:"gap",id:9},{t:"text",c:", gero eta obra gehiagok daramate copyleft "},{t:"gap",id:10},{t:"text",c:" lizentzia. Izenak berak argi erakusten du zuzenean egiten duela "},{t:"gap",id:11},{t:"text",c:' copyrightarekin. Arte Librearen Lizentziak, hots, copyleftak, babesten duen zeinahi obra kopiatzeko, zabaltzeko eta aldatzeko askatasun osoa eskaintzen du. Copyrightak erabiltzaileei hainbat muga ezartzen die, eta horiek ezabatu nahi ditu copyleftak, obra aberastea eta '},{t:"gap",id:12},{t:"text",c:" jende gehienarengana heltzea delako bere xedea. Copylefta erabilita, nahi duen "},{t:"gap",id:13},{t:"text",c:" obra originalaren gainean aldaketak egin eta bertso berri hori zabal dezake eta, horrez gainera, hirugarren erabiltzaile batek, "},{t:"gap",id:14},{t:"text",c:", bigarren bertsioa aldatzeko aukera du. Lizentzia horren tasuna horretan "},{t:"gap",id:15},{t:"text",c:': obra artistikoak babestean eta sustatzean, batez ere merkatuaren ekonomia arautzen duten legeetatik kanpo daudenak. "Babestu" diogu, copyleftak egile eskubideak onartu eta babestu egiten dituelako; izan ere, egileak erabakitzen du bere obra zein neurritaraino kopiatu, ezagutarazi eta '},{t:"gap",id:16},{t:"text",c:" dezaketen gainerakoek."},
+  {t:"break"},
+  {t:"text",c:"Copyleft mugimendua 80ko hamarkadaren amaieran sortu zen software librearen inguruko programatzaileei esker. Haiexek dira, orobat, Linux sistema eragilearen gurasoak. Arte Librearen Lizentzia Internet eta software librearen esparruan "},{t:"gap",id:17},{t:"text",c:", mota guztietako obrak babes "},{t:"gap",id:18},{t:"text",c:": koadroak, eskulturak, kantuak, web guneak…"},
+  {t:"break"},
+  {t:"text",c:"Creative Commons (CC) irabazi asmorik gabeko elkartea da. "},{t:"gap",id:19},{t:"text",c:", bere obrak libreki erabiliak izatea nahi duen autoreari babes legala ematen dioten copyleft lizentziak garatu ditu. CC zeinuak, egileak bere eskubideei "},{t:"gap",id:20},{t:"text",c:" arren, erabilera batzuetarako baimena ematen duela adierazten du. Autoreak erabakitzen du bere obra zertarako eta nola erabil dezaketen, eta horretarako Creative Commons erakundeak moldatutako lizentzia libreen zerrenda erabili ohi du laguntza "},{t:"gap",id:21},{t:"text",c:". CCk banatzen dituen lizentzien artean eskuduntza lizentziak ematen du aukera gehien, obra originalaren autorea aipatuz gero, obra hori nolanahi kopia, eralda eta zabal "},{t:"gap",id:22},{t:"text",c:". Badago aldaketarik onartzen ez duen lizentziarik ere, lana ezagutaraztea onesten duena, ez hura aldatzea, "},{t:"gap",id:23},{t:"text",c:"."},
+  {t:"break"},
+  {t:"text",c:"Bestalde, obra originalaren egileak aukeraturiko lizentzia edozein "},{t:"gap",id:24},{t:"text",c:", badira ezinbestean errespetatu beharreko baldintza batzuk. Esaterako, obra originalaren egilea nor den eta obra non eskura daitekeen beti aipatu behar da. Gainera, lizentzia libreko obra bat ezin da beste lizentzia desberdin bat, copyrighta adibidez, duen obra batekin "},{t:"gap",id:25},{t:"text",c:"."},
+];
+
+const questions = {
+  1:{opts:["izenpe","egitasmo","oihartzun","zarata"],correct:"oihartzun"},
+  2:{opts:["alabaina","hau da","hala nola","esaterako"],correct:"alabaina"},
+  3:{opts:["aholkua","banaketa","antolamendua","hautua"],correct:"hautua"},
+  4:{opts:["bide batez","batik bat","behingoz","bederen"],correct:"batik bat"},
+  5:{opts:["duenak","duenik","duela","duen"],correct:"duenik"},
+  6:{opts:["aitzakiatzat hartuta","aitzakitzat jota","aitzakien gisa","aitzakiren tankera"],correct:"aitzakiatzat hartuta"},
+  7:{opts:["baizik eta","bezainbat","baino","beste"],correct:"baino"},
+  8:{opts:["dena dela","hain zuzen ere","ere bai","baliteke"],correct:"hain zuzen ere"},
+  9:{opts:["Hori dela eta","Aldiz","Bestela","Alderantziz"],correct:"Hori dela eta"},
+  10:{opts:["dagokion","deritzon","dakarkion","darion"],correct:"deritzon"},
+  11:{opts:["huts","uko","talka","aurre"],correct:"talka"},
+  12:{opts:["ahalik eta","hainbat eta","zenbat eta","orduan eta"],correct:"ahalik eta"},
+  13:{opts:["edozein","denek","edonor","orok"],correct:"orok"},
+  14:{opts:["halaber","halere","baita","hargatik"],correct:"halaber"},
+  15:{opts:["dabil","dakar","datza","doakio"],correct:"datza"},
+  16:{opts:["bestelakotu","baieztatu","zapuztu","saritu"],correct:"bestelakotu"},
+  17:{opts:["sortu denez","sortzeke","sortu ezean","sortuagatik"],correct:"sortuagatik"},
+  18:{opts:["litzateke","lezakete","lirateke","litezke"],correct:"litezke"},
+  19:{opts:["Besteak beste","Behinik behin","Hala-hola","Betez beste"],correct:"Besteak beste"},
+  20:{opts:["eutsi","itsatsi","igarri","iragazi"],correct:"eutsi"},
+  21:{opts:["ordez","gisa","truk","kontura"],correct:"gisa"},
+  22:{opts:["badaiteke","badaiteke ere","baitaiteke","daitekeenentz"],correct:"baitaiteke"},
+  23:{opts:["baizik","baino","ordea","ordez"],correct:"ordea"},
+  24:{opts:["izan ezik","izanik ere","ez ezik ere","izateagatik"],correct:"izanik ere"},
+  25:{opts:["saihestu","ekin","uztartu","jardun"],correct:"uztartu"},
+};
+
+let answers={}, timerInterval=null, secondsLeft=1200, userName="", userEmail="", openGap=null;
+
+function startExam(){
+  const n=document.getElementById("inp-name").value.trim();
+  const e=document.getElementById("inp-email").value.trim();
+  const err=document.getElementById("form-error");
+  if(!n){err.textContent="Mesedez, idatzi zure izena.";err.style.display="block";return;}
+  if(!e||!e.includes("@")){err.textContent="Mesedez, idatzi helbide elektroniko baliogarri bat.";err.style.display="block";return;}
+  userName=n; userEmail=e;
+  document.getElementById("start").style.display="none";
+  document.getElementById("exam").style.display="block";
+  renderText();
+  timerInterval=setInterval(tick,1000);
+}
+
+function tick(){
+  secondsLeft--;
+  const m=String(Math.floor(secondsLeft/60)).padStart(2,"0");
+  const s=String(secondsLeft%60).padStart(2,"0");
+  const t=document.getElementById("timer");
+  t.textContent=`${m}:${s}`;
+  t.className="timer"+(secondsLeft<=60?" urgent":"");
+  if(secondsLeft<=0){clearInterval(timerInterval);submitExam();}
+}
+
+function renderText(){
+  const container=document.getElementById("text-body");
+  container.innerHTML="";
+  segments.forEach(seg=>{
+    if(seg.t==="break"){container.appendChild(document.createElement("br"));container.appendChild(document.createElement("br"));}
+    else if(seg.t==="text"){container.appendChild(document.createTextNode(seg.c));}
+    else if(seg.t==="gap"){
+      const wrap=document.createElement("span");
+      wrap.style.cssText="display:inline-block;position:relative;vertical-align:middle";
+      const btn=document.createElement("button");
+      btn.id=`gap-btn-${seg.id}`;
+      btn.className="gap-btn"+(answers[seg.id]?" selected":"");
+      btn.textContent=answers[seg.id]||`_${seg.id}_`;
+      btn.onclick=()=>toggleDropdown(seg.id);
+      const dd=document.createElement("div");
+      dd.id=`dd-${seg.id}`;
+      dd.className="dropdown";
+      questions[seg.id].opts.forEach(opt=>{
+        const o=document.createElement("div");
+        o.className="opt"+(answers[seg.id]===opt?" active":"");
+        o.textContent=opt;
+        o.onclick=()=>selectAnswer(seg.id,opt);
+        dd.appendChild(o);
+      });
+      wrap.appendChild(btn);
+      wrap.appendChild(dd);
+      container.appendChild(wrap);
+    }
+  });
+  updateProgress();
+}
+
+function toggleDropdown(id){
+  if(openGap&&openGap!==id){document.getElementById(`dd-${openGap}`).classList.remove("open");}
+  const dd=document.getElementById(`dd-${id}`);
+  dd.classList.toggle("open");
+  openGap=dd.classList.contains("open")?id:null;
+}
+
+function selectAnswer(id,opt){
+  answers[id]=opt;
+  document.getElementById(`gap-btn-${id}`).textContent=opt;
+  document.getElementById(`gap-btn-${id}`).className="gap-btn selected";
+  document.getElementById(`dd-${id}`).classList.remove("open");
+  document.getElementById(`dd-${id}`).querySelectorAll(".opt").forEach(o=>{
+    o.className="opt"+(o.textContent===opt?" active":"");
+  });
+  openGap=null;
+  updateProgress();
+}
+
+function updateProgress(){
+  const n=Object.keys(answers).length;
+  document.getElementById("progress-lbl").textContent=`${n}/25 erantzunda`;
+  document.getElementById("remaining-lbl").textContent=`${25-n} hutsune falta`;
+  document.getElementById("progress-fill").style.width=`${(n/25)*100}%`;
+}
+
+function submitExam(){
+  clearInterval(timerInterval);
+  const sc=Object.entries(questions).filter(([id,q])=>answers[+id]===q.correct).length;
+  const gr=sc>=20?"Zure maila C1.2 da.":sc>=15?"Zure maila C1.1 da.":"Egin B2 mailaketa proba.";
+  const gcol=sc>=20?"#3a7d5c":sc>=15?"#9a6e2a":"#b94a6a";
+  const gbg=sc>=20?"#e6f4ed":sc>=15?"#fdf4e3":"#fceef3";
+  const fecha=new Date().toLocaleString("es-ES");
+
+  // Send to Google Sheets
+  const params=new URLSearchParams({fecha,nombre:userName,email:userEmail,puntuacion:`${sc}/25`,resultado:gr});
+  const img=new Image();
+  img.src=`${SHEET_URL}?${params.toString()}`;
+
+  // Show result
+  document.getElementById("exam").style.display="none";
+  document.getElementById("result").style.display="block";
+  document.getElementById("res-user").textContent=`${userName} · ${userEmail}`;
+  const sb=document.getElementById("score-box");
+  sb.style.background=gbg; sb.style.border=`1px solid ${gcol}22`;
+  document.getElementById("score-num").style.color=gcol;
+  document.getElementById("score-num").innerHTML=`${sc}<span style="font-size:22px;font-weight:400;color:#7a6e8a">/${Object.keys(questions).length}</span>`;
+  document.getElementById("score-grade").style.color=gcol;
+  document.getElementById("score-grade").textContent=gr;
+  document.getElementById("prog-fill").style.background=gcol;
+  document.getElementById("prog-fill").style.width=`${(sc/25)*100}%`;
+
+  const grid=document.getElementById("corr-grid");
+  grid.innerHTML="";
+  Object.entries(questions).forEach(([id,q])=>{
+    const ans=answers[+id];
+    const ok=ans===q.correct;
+    const d=document.createElement("div");
+    d.className="corr-item";
+    d.style.cssText=`border:1.5px solid ${ok?"#c9b8ec":"#fceef3"};background:${ok?"#e6f4ed":"#fceef3"}`;
+    d.innerHTML=`<div class="corr-id">_${id}_</div>${!ok&&ans?`<div class="corr-wrong" style="color:#b94a6a">${ans}</div>`:""}<div class="corr-right" style="color:#3a7d5c">${q.correct} ✓</div>`;
+    grid.appendChild(d);
+  });
+}
+
+document.addEventListener("click",e=>{
+  if(openGap&&!e.target.closest(`#gap-btn-${openGap}`)&&!e.target.closest(`#dd-${openGap}`)){
+    document.getElementById(`dd-${openGap}`).classList.remove("open");
+    openGap=null;
+  }
+});
+</script>
+</body>
+</html>
