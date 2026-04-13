@@ -3,75 +3,75 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>C1 Mailaketa proba – Ulibarri</title>
+<title>Mailaketa proba – Ulibarri</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Georgia,serif;background:#f4f2f9;color:#2a2035;min-height:100vh}
-  input{font-family:Georgia,serif;width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #d8ceee;font-size:14px;outline:none;background:#fff;color:#2a2035}
-  button{cursor:pointer;font-family:Georgia,serif}
-
-  /* START */
-  #start{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
-  .card{background:#fff;border-radius:16px;padding:40px 36px;max-width:460px;width:100%;box-shadow:0 2px 20px rgba(0,0,0,0.07);border:1px solid #d8ceee}
-  .badge{display:inline-block;background:#ede8f7;border-radius:12px;padding:10px 18px;margin-bottom:14px;font-size:13px;font-weight:700;color:#6b4fa8;letter-spacing:1px}
-  .stats{display:flex;justify-content:center;gap:24px;background:#ede8f7;border-radius:10px;padding:14px 20px;margin-bottom:24px}
-  .stat-val{font-weight:700;font-size:18px;color:#6b4fa8;text-align:center}
-  .stat-lbl{font-size:11px;color:#7a6e8a;text-align:center}
-  .divider{width:1px;background:#c9b8ec}
-  label{font-size:13px;font-weight:600;color:#2a2035;display:block;margin-bottom:5px}
-  .field{margin-bottom:14px}
-  .error{color:#b94a6a;font-size:13px;margin-bottom:12px;background:#fceef3;padding:8px 12px;border-radius:7px}
-  .btn-primary{background:#6b4fa8;color:#fff;border:none;border-radius:10px;padding:13px 0;font-size:15px;font-weight:700;width:100%;letter-spacing:0.5px}
-  .btn-primary:hover{background:#5a3f96}
-
-  /* EXAM */
-  #exam{display:none}
-  .header{background:#fff;border-bottom:1px solid #d8ceee;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-  .h-title{font-weight:700;font-size:14px;color:#2a2035}
-  .h-sub{font-size:11px;color:#7a6e8a}
-  .timer{font-size:22px;font-weight:800;color:#6b4fa8;font-variant-numeric:tabular-nums;text-align:center}
-  .timer.urgent{color:#b94a6a}
-  .timer-lbl{font-size:10px;color:#7a6e8a;text-align:center}
-  .btn-sm{background:#6b4fa8;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;font-size:13px}
-  .progress-bar{height:3px;background:#ede8f7}
-  .progress-fill{height:3px;background:#6b4fa8;transition:width 0.3s}
-  .body-text{max-width:780px;margin:24px auto;background:#fff;border-radius:16px;padding:32px 36px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1px solid #d8ceee;line-height:2.1;font-size:15.5px;position:relative}
-  .gap-btn{display:inline-block;min-width:130px;padding:2px 10px;border:2px solid #d8ceee;border-radius:6px;background:#f4f2f9;color:#7a6e8a;font-weight:400;font-size:14px;font-family:Georgia,serif;vertical-align:middle;position:relative}
-  .gap-btn.selected{border-color:#6b4fa8;background:#ede8f7;color:#6b4fa8;font-weight:700}
-  .dropdown{display:none;position:absolute;top:110%;left:0;background:#fff;border:1.5px solid #c9b8ec;border-radius:10px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.10);min-width:170px;padding:5px}
-  .dropdown.open{display:block}
-  .opt{padding:8px 14px;border-radius:7px;font-size:14px;color:#2a2035;cursor:pointer}
-  .opt:hover{background:#f4f2f9}
-  .opt.active{background:#ede8f7;font-weight:700}
-  .bottom-bar{max-width:780px;margin:0 auto 40px;display:flex;justify-content:space-between;align-items:center;padding:0 4px}
-  .btn-lg{background:#6b4fa8;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-weight:700;font-size:15px}
-
-  /* RESULT */
-  #result{display:none;padding:28px 16px;min-height:100vh}
-  .res-card{background:#fff;border-radius:16px;padding:36px;text-align:center;box-shadow:0 2px 16px rgba(0,0,0,0.07);border:1px solid #d8ceee;margin-bottom:20px;max-width:700px;margin-left:auto;margin-right:auto}
-  .score-box{border-radius:12px;padding:20px;margin-bottom:16px}
-  .score-num{font-size:42px;font-weight:800;margin-bottom:6px}
-  .score-grade{font-size:17px;font-weight:700}
-  .prog{background:#f4f2f9;border-radius:8px;height:10px;overflow:hidden;margin-top:16px}
-  .prog-fill{height:10px;border-radius:8px;transition:width 1s}
-  .corrections{background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 2px 16px rgba(0,0,0,0.07);border:1px solid #d8ceee;max-width:700px;margin:0 auto}
-  .corr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:16px}
-  .corr-item{border-radius:8px;padding:9px 12px}
-  .corr-id{font-weight:700;font-size:12px;color:#7a6e8a;margin-bottom:3px}
-  .corr-wrong{font-size:12px;text-decoration:line-through}
-  .corr-right{font-size:13px;font-weight:600}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:#f4f2f9;color:#2a2035;min-height:100vh}
+input{font-family:Georgia,serif;width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #d8ceee;font-size:14px;outline:none;background:#fff;color:#2a2035}
+button{cursor:pointer;font-family:Georgia,serif}
+.screen{display:none}
+.screen.active{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
+.card{background:#fff;border-radius:16px;padding:40px 36px;max-width:460px;width:100%;box-shadow:0 2px 20px rgba(0,0,0,0.07);border:1px solid #d8ceee}
+.logo{display:flex;justify-content:center;margin-bottom:20px}
+.logo img{height:80px;object-fit:contain}
+h1{font-size:22px;font-weight:700;color:#2a2035;margin:0 0 6px;text-align:center}
+.subtitle{color:#7a6e8a;font-size:14px;line-height:1.6;text-align:center;margin-bottom:24px}
+.stats{display:flex;justify-content:center;gap:24px;background:#ede8f7;border-radius:10px;padding:14px 20px;margin-bottom:24px}
+.stat-val{font-weight:700;font-size:18px;color:#6b4fa8;text-align:center}
+.stat-lbl{font-size:11px;color:#7a6e8a;text-align:center}
+.divider{width:1px;background:#c9b8ec}
+label{font-size:13px;font-weight:600;color:#2a2035;display:block;margin-bottom:5px}
+.field{margin-bottom:14px}
+.error{color:#b94a6a;font-size:13px;margin-bottom:12px;background:#fceef3;padding:8px 12px;border-radius:7px;display:none}
+.btn-primary{background:#6b4fa8;color:#fff;border:none;border-radius:10px;padding:13px 0;font-size:15px;font-weight:700;width:100%;letter-spacing:0.5px;margin-top:4px}
+.btn-primary:hover{background:#5a3f96}
+.btn-secondary{background:#ede8f7;color:#6b4fa8;border:1.5px solid #c9b8ec;border-radius:10px;padding:12px 0;font-size:14px;font-weight:700;width:100%;margin-top:10px}
+.btn-secondary:hover{background:#e0d8f5}
+.level-btn{background:#f4f2f9;border:2px solid #d8ceee;border-radius:10px;padding:14px 20px;font-size:16px;font-weight:700;color:#7a6e8a;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:Georgia,serif;width:100%;margin-bottom:10px}
+.level-btn.selected{background:#ede8f7;border-color:#6b4fa8;color:#6b4fa8}
+/* EXAM */
+#exam-screen{display:none;flex-direction:column;min-height:100vh}
+.header{background:#fff;border-bottom:1px solid #d8ceee;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.h-title{font-weight:700;font-size:14px;color:#2a2035}
+.h-sub{font-size:11px;color:#7a6e8a}
+.timer{font-size:22px;font-weight:800;color:#6b4fa8;font-variant-numeric:tabular-nums;text-align:center}
+.timer.urgent{color:#b94a6a}
+.timer-lbl{font-size:10px;color:#7a6e8a;text-align:center}
+.btn-sm{background:#6b4fa8;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;font-size:13px}
+.progress-bar{height:3px;background:#ede8f7}
+.progress-fill{height:3px;background:#6b4fa8;transition:width 0.3s}
+.exam-body{max-width:780px;margin:0 auto;padding:16px}
+.exam-intro{color:#7a6e8a;font-size:13px;margin-bottom:20px;text-align:center}
+.text-block{background:#fff;border-radius:16px;padding:28px 32px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1px solid #d8ceee;line-height:2.1;font-size:15.5px;color:#2a2035;margin-bottom:20px}
+.section-title{font-weight:700;font-size:15px;color:#6b4fa8;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #d8ceee}
+.gap-btn{display:inline-block;min-width:120px;padding:2px 10px;border:2px solid #d8ceee;border-radius:6px;background:#f4f2f9;color:#7a6e8a;font-weight:400;font-size:14px;font-family:Georgia,serif;vertical-align:middle;position:relative;cursor:pointer}
+.gap-btn.selected{border-color:#6b4fa8;background:#ede8f7;color:#6b4fa8;font-weight:700}
+.gap-wrap{display:inline-block;position:relative;vertical-align:middle}
+.dropdown{display:none;position:absolute;top:110%;left:0;background:#fff;border:1.5px solid #c9b8ec;border-radius:10px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.10);min-width:160px;padding:5px;white-space:nowrap}
+.dropdown.open{display:block}
+.opt{padding:8px 14px;border-radius:7px;font-size:14px;color:#2a2035;cursor:pointer}
+.opt:hover{background:#f4f2f9}
+.opt.active{background:#ede8f7;font-weight:700}
+.bottom-bar{max-width:780px;margin:0 auto 40px;display:flex;justify-content:space-between;align-items:center;padding:0 16px}
+.btn-lg{background:#6b4fa8;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-weight:700;font-size:15px}
+/* RESULT */
+.score-box{border-radius:12px;padding:24px;margin-bottom:16px}
+.score-num{font-size:48px;font-weight:800;margin-bottom:8px}
+.score-grade{font-size:17px;font-weight:700}
+.prog{background:#f4f2f9;border-radius:8px;height:10px;overflow:hidden;margin-bottom:0}
+.prog-fill{height:10px;border-radius:8px;transition:width 1s}
+/* BYE */
+.bye-emoji{font-size:52px;margin-bottom:16px}
 </style>
 </head>
 <body>
 
 <!-- START -->
-<div id="start">
+<div id="start-screen" class="screen active">
   <div class="card">
-    <div style="text-align:center;margin-bottom:24px">
-      <div class="badge">ULIBARRI EUSKALTEGIA</div>
-      <h1 style="font-size:22px;font-weight:700;margin-bottom:6px">C1 Mailaketa proba</h1>
-      <p style="color:#7a6e8a;font-size:14px;line-height:1.6">Testuko hutsuneak bete aukera anitzeko erantzunekin.</p>
-    </div>
+    <div class="logo"><img src="http://ulibarri.eus/wp-content/uploads/2024/06/Ulibarri-300.png" alt="Ulibarri Euskaltegia"/></div>
+    <h1>Mailaketa proba</h1>
+    <p class="subtitle">Zure euskara maila neurtzeko proba.</p>
     <div class="stats">
       <div><div class="stat-val">25</div><div class="stat-lbl">Galdera</div></div>
       <div class="divider"></div>
@@ -81,24 +81,38 @@
       <label>Izena eta abizena *</label>
       <input type="text" id="inp-name" placeholder="Adib.: Ane Etxebarria"/>
     </div>
-    <div class="field" style="margin-bottom:20px">
+    <div class="field">
       <label>Helbide elektronikoa *</label>
       <input type="email" id="inp-email" placeholder="adib.: ane@email.com"/>
     </div>
-    <div id="form-error" class="error" style="display:none"></div>
-    <button class="btn-primary" onclick="startExam()">Hasi</button>
+    <div id="form-error" class="error"></div>
+    <button class="btn-primary" onclick="goToLevel()">Hurrengoa →</button>
+  </div>
+</div>
+
+<!-- LEVEL -->
+<div id="level-screen" class="screen">
+  <div class="card">
+    <div class="logo"><img src="http://ulibarri.eus/wp-content/uploads/2024/06/Ulibarri-300.png" alt="Ulibarri Euskaltegia"/></div>
+    <h1>Aukeratu maila</h1>
+    <p class="subtitle">Zein mailako proba egin nahi duzu?</p>
+    <div id="level-buttons"></div>
+    <button class="btn-primary" id="start-exam-btn" style="background:#c9b8ec;cursor:not-allowed" onclick="startExam()">Hasi proba →</button>
   </div>
 </div>
 
 <!-- EXAM -->
-<div id="exam">
+<div id="exam-screen">
   <div class="header">
-    <div><div class="h-title">C1 Mailaketa proba</div><div class="h-sub" id="progress-lbl">0/25 erantzunda</div></div>
+    <div><div class="h-title" id="exam-title"></div><div class="h-sub" id="progress-lbl">0/25 erantzunda</div></div>
     <div><div class="timer" id="timer">20:00</div><div class="timer-lbl">geratzen da</div></div>
     <button class="btn-sm" onclick="submitExam()">Bidali</button>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-  <div class="body-text" id="text-body"></div>
+  <div class="exam-body">
+    <p class="exam-intro">Aukeratu hutsuneak betetzeko erantzun egokia. Proba egiteko 20 minutu dituzu.</p>
+    <div id="text-body"></div>
+  </div>
   <div class="bottom-bar">
     <span style="font-size:13px;color:#7a6e8a" id="remaining-lbl">25 hutsune falta</span>
     <button class="btn-lg" onclick="submitExam()">Bidali proba</button>
@@ -106,198 +120,439 @@
 </div>
 
 <!-- RESULT -->
-<div id="result">
-  <div class="res-card">
-    <div style="display:inline-block;background:#ede8f7;border-radius:8px;padding:6px 14px;margin-bottom:16px;font-size:12px;font-weight:700;color:#6b4fa8;letter-spacing:1px">ULIBARRI EUSKALTEGIA</div>
-    <h2 style="font-size:18px;font-weight:700;margin-bottom:4px">C1 Mailaketa proba — Emaitzak</h2>
-    <div id="res-user" style="color:#7a6e8a;font-size:13px;margin-bottom:20px"></div>
+<div id="result-screen" class="screen">
+  <div class="card" style="text-align:center">
+    <div class="logo"><img src="http://ulibarri.eus/wp-content/uploads/2024/06/Ulibarri-300.png" alt="Ulibarri Euskaltegia"/></div>
+    <h1 id="result-title"></h1>
+    <p id="result-user" style="color:#7a6e8a;font-size:13px;margin:4px 0 20px"></p>
     <div class="score-box" id="score-box">
       <div class="score-num" id="score-num"></div>
       <div class="score-grade" id="score-grade"></div>
     </div>
     <div class="prog"><div class="prog-fill" id="prog-fill"></div></div>
+    <button class="btn-secondary" onclick="goToLevel()">← Beste maila bat aukeratu</button>
+    <button class="btn-primary" onclick="finish()">Bukatu</button>
   </div>
-  <div class="corrections">
-    <h3 style="font-size:15px;font-weight:700;color:#2a2035">Zuzenketa</h3>
-    <div class="corr-grid" id="corr-grid"></div>
+</div>
+
+<!-- BYE -->
+<div id="bye-screen" class="screen">
+  <div class="card" style="text-align:center">
+    <div class="logo"><img src="http://ulibarri.eus/wp-content/uploads/2024/06/Ulibarri-300.png" alt="Ulibarri Euskaltegia"/></div>
+    <div class="bye-emoji">🙏</div>
+    <h1 style="font-size:28px;color:#6b4fa8;margin-bottom:12px">Eskerrik asko!</h1>
+    <p style="color:#7a6e8a;font-size:15px;line-height:1.7">Proba osatu duzu. Laster ikasiko dugu elkarrekin!</p>
   </div>
 </div>
 
 <script>
 const SHEET_URL = "https://script.google.com/macros/s/AKfycby_vrD0wGpn_XU-NlU2D7-UL7gGej6jwFw171WriqRO3c7Jdi9kL0zfWOn1MZYRZFU/exec";
-
-const segments = [
-  {t:"text",c:"Jabego intelektualaren aurkako erasoen eta hura babesteko neurrien inguruko eztabaidak gero eta "},
-  {t:"gap",id:1},{t:"text",c:" handiagoa dute. Batzuk egile eskubideen defentsan oinarrituta, sormen lanei copyright lizentziak ezartzearen alde agertzen dira; "},
-  {t:"gap",id:2},{t:"text",c:" gero eta lagun gehiagok egiten du eredu eskuzabalagoen aldeko "},{t:"gap",id:3},{t:"text",c:"."},
-  {t:"break"},
-  {t:"text",c:"Aurrerapen teknologikoek, digitalizazioak "},{t:"gap",id:4},{t:"text",c:", eta Internetek sormen lanak kopiatzeko, zabaltzeko eta eransteko bideak izugarri erraztu dituzte. Ondorioz, autore eta erabiltzaile ugari gustura agertu da ezagutza elkarren artean banatzeko aukerak areagotu direlako; baina hori mehatxu moduan ikusten "},{t:"gap",id:5},{t:"text",c:" ere badago. Azken horiek jabetza intelektualak gero eta eraso gehiago jasaten duela diote eta egile eskubideen defentsa "},{t:"gap",id:6},{t:"text",c:", kontsumitzaileen eskubideak murrizten dituzten neurrien alde egiten dute, esaterako, autoreen eskubideak babesteko sormen lanei copyright lizentzia ezaguna ezartzearen alde."},
-  {t:"break"},
-  {t:"text",c:"Askoren ustez, ordea, copyrightak ez ditu egileen eskubideak defendatzen, multinazional handienak "},{t:"gap",id:7},{t:"text",c:". Kultura gizakiok gozatzeko sortutako ondasuna da, ez mugak jarri behar zaizkion produktua, eta, "},{t:"gap",id:8},{t:"text",c:", lizentzia horrek hori egiten omen du: bakar batzuen poltsikoak bete eta kulturara hurbiltzeko ateak itxi. "},{t:"gap",id:9},{t:"text",c:", gero eta obra gehiagok daramate copyleft "},{t:"gap",id:10},{t:"text",c:" lizentzia. Izenak berak argi erakusten du zuzenean egiten duela "},{t:"gap",id:11},{t:"text",c:' copyrightarekin. Arte Librearen Lizentziak, hots, copyleftak, babesten duen zeinahi obra kopiatzeko, zabaltzeko eta aldatzeko askatasun osoa eskaintzen du. Copyrightak erabiltzaileei hainbat muga ezartzen die, eta horiek ezabatu nahi ditu copyleftak, obra aberastea eta '},{t:"gap",id:12},{t:"text",c:" jende gehienarengana heltzea delako bere xedea. Copylefta erabilita, nahi duen "},{t:"gap",id:13},{t:"text",c:" obra originalaren gainean aldaketak egin eta bertso berri hori zabal dezake eta, horrez gainera, hirugarren erabiltzaile batek, "},{t:"gap",id:14},{t:"text",c:", bigarren bertsioa aldatzeko aukera du. Lizentzia horren tasuna horretan "},{t:"gap",id:15},{t:"text",c:': obra artistikoak babestean eta sustatzean, batez ere merkatuaren ekonomia arautzen duten legeetatik kanpo daudenak. "Babestu" diogu, copyleftak egile eskubideak onartu eta babestu egiten dituelako; izan ere, egileak erabakitzen du bere obra zein neurritaraino kopiatu, ezagutarazi eta '},{t:"gap",id:16},{t:"text",c:" dezaketen gainerakoek."},
-  {t:"break"},
-  {t:"text",c:"Copyleft mugimendua 80ko hamarkadaren amaieran sortu zen software librearen inguruko programatzaileei esker. Haiexek dira, orobat, Linux sistema eragilearen gurasoak. Arte Librearen Lizentzia Internet eta software librearen esparruan "},{t:"gap",id:17},{t:"text",c:", mota guztietako obrak babes "},{t:"gap",id:18},{t:"text",c:": koadroak, eskulturak, kantuak, web guneak…"},
-  {t:"break"},
-  {t:"text",c:"Creative Commons (CC) irabazi asmorik gabeko elkartea da. "},{t:"gap",id:19},{t:"text",c:", bere obrak libreki erabiliak izatea nahi duen autoreari babes legala ematen dioten copyleft lizentziak garatu ditu. CC zeinuak, egileak bere eskubideei "},{t:"gap",id:20},{t:"text",c:" arren, erabilera batzuetarako baimena ematen duela adierazten du. Autoreak erabakitzen du bere obra zertarako eta nola erabil dezaketen, eta horretarako Creative Commons erakundeak moldatutako lizentzia libreen zerrenda erabili ohi du laguntza "},{t:"gap",id:21},{t:"text",c:". CCk banatzen dituen lizentzien artean eskuduntza lizentziak ematen du aukera gehien, obra originalaren autorea aipatuz gero, obra hori nolanahi kopia, eralda eta zabal "},{t:"gap",id:22},{t:"text",c:". Badago aldaketarik onartzen ez duen lizentziarik ere, lana ezagutaraztea onesten duena, ez hura aldatzea, "},{t:"gap",id:23},{t:"text",c:"."},
-  {t:"break"},
-  {t:"text",c:"Bestalde, obra originalaren egileak aukeraturiko lizentzia edozein "},{t:"gap",id:24},{t:"text",c:", badira ezinbestean errespetatu beharreko baldintza batzuk. Esaterako, obra originalaren egilea nor den eta obra non eskura daitekeen beti aipatu behar da. Gainera, lizentzia libreko obra bat ezin da beste lizentzia desberdin bat, copyrighta adibidez, duen obra batekin "},{t:"gap",id:25},{t:"text",c:"."},
-];
-
-const questions = {
-  1:{opts:["izenpe","egitasmo","oihartzun","zarata"],correct:"oihartzun"},
-  2:{opts:["alabaina","hau da","hala nola","esaterako"],correct:"alabaina"},
-  3:{opts:["aholkua","banaketa","antolamendua","hautua"],correct:"hautua"},
-  4:{opts:["bide batez","batik bat","behingoz","bederen"],correct:"batik bat"},
-  5:{opts:["duenak","duenik","duela","duen"],correct:"duenik"},
-  6:{opts:["aitzakiatzat hartuta","aitzakitzat jota","aitzakien gisa","aitzakiren tankera"],correct:"aitzakiatzat hartuta"},
-  7:{opts:["baizik eta","bezainbat","baino","beste"],correct:"baino"},
-  8:{opts:["dena dela","hain zuzen ere","ere bai","baliteke"],correct:"hain zuzen ere"},
-  9:{opts:["Hori dela eta","Aldiz","Bestela","Alderantziz"],correct:"Hori dela eta"},
-  10:{opts:["dagokion","deritzon","dakarkion","darion"],correct:"deritzon"},
-  11:{opts:["huts","uko","talka","aurre"],correct:"talka"},
-  12:{opts:["ahalik eta","hainbat eta","zenbat eta","orduan eta"],correct:"ahalik eta"},
-  13:{opts:["edozein","denek","edonor","orok"],correct:"orok"},
-  14:{opts:["halaber","halere","baita","hargatik"],correct:"halaber"},
-  15:{opts:["dabil","dakar","datza","doakio"],correct:"datza"},
-  16:{opts:["bestelakotu","baieztatu","zapuztu","saritu"],correct:"bestelakotu"},
-  17:{opts:["sortu denez","sortzeke","sortu ezean","sortuagatik"],correct:"sortuagatik"},
-  18:{opts:["litzateke","lezakete","lirateke","litezke"],correct:"litezke"},
-  19:{opts:["Besteak beste","Behinik behin","Hala-hola","Betez beste"],correct:"Besteak beste"},
-  20:{opts:["eutsi","itsatsi","igarri","iragazi"],correct:"eutsi"},
-  21:{opts:["ordez","gisa","truk","kontura"],correct:"gisa"},
-  22:{opts:["badaiteke","badaiteke ere","baitaiteke","daitekeenentz"],correct:"baitaiteke"},
-  23:{opts:["baizik","baino","ordea","ordez"],correct:"ordea"},
-  24:{opts:["izan ezik","izanik ere","ez ezik ere","izateagatik"],correct:"izanik ere"},
-  25:{opts:["saihestu","ekin","uztartu","jardun"],correct:"uztartu"},
+const LEVELS = ["A1","A2","B1","B2","C1"];
+const THRESHOLDS = {A1:12,A2:10,B1:14,B2:14,C1:14};
+const GRADES = {
+  A1: s => s<=12 ? "Zure hasierako maila A1 da." : "Zure hasierako maila A2 da.",
+  A2: s => s<=10 ? "Egin A1 mailaketa proba." : "Zure hasierako maila A2 da.",
+  B1: s => s<=14 ? "Egin A2 mailaketa proba." : "Zure hasierako maila B1 da.",
+  B2: s => s<=14 ? "Egin B1 mailaketa proba." : "Zure hasierako maila B2 da.",
+  C1: s => s<=14 ? "Egin B2 mailaketa proba." : "Zure hasierako maila C1 da.",
 };
 
-let answers={}, timerInterval=null, secondsLeft=1200, userName="", userEmail="", openGap=null;
+const EXAMS = {
+  A1:{total:25,sections:[
+    {title:"Lehenengo ariketa",segments:[
+      {t:"t",c:"Maribelek irakurtzeko gogoa "},{t:"g",id:1},{t:"t",c:" eta egongelara joan da hango apaletatik liburu atsegin bat hartzera. Begiratu du eta haserretu "},{t:"g",id:2},{t:"t",c:" bi nobela falta "},{t:"g",id:3},{t:"t",c:" eta. Non ote dira? Beti gertatzen da berdin: zerbait nahi duzunean, ez "},{t:"g",id:4},{t:"t",c:" inon aurkitzen. Andoni ere gelan dago."},
+      {t:"b"},{t:"t",c:"–Aizu, Andoni –esaten "},{t:"g",id:5},{t:"t",c:" neskak– bi nobela falta "},{t:"g",id:6},{t:"t",c:". Joan den astean hemen zeuden, goiko apalean eta orain ez ditut inon aurkitzen. Ba al dakizu nork hartu dituen?"},
+      {t:"b"},{t:"t",c:"–Bai, –erantzuten du mutilak– nik hartu "},{t:"g",id:7},{t:"t",c:". Mikelek eskatu "},{t:"g",id:8},{t:"t",c:" eta utzi egin "},{t:"g",id:9},{t:"t",c:"."},
+      {t:"b"},{t:"t",c:"Ederra egin duela esaten dio haserre Maribelek."},
+      {t:"b"},{t:"t",c:"–Ez da izango! Mikeli utzi al "},{t:"g",id:10},{t:"t",c:"?"},
+      {t:"b"},{t:"t",c:"Maribel ez "},{t:"g",id:11},{t:"t",c:" lasai. Zer gertatuko den ez daki eta. Askotan bezala, esku batetik bestera pasako dira liburuak eta azkenean galduko "},{t:"g",id:12},{t:"t",c:"."},
+      {t:"b"},{t:"t",c:"–Orain Mikelek beste lagun bati utziko "},{t:"g",id:13},{t:"t",c:", honek beste bati eta azkenean, jakina, libururik gabe geratuko "},{t:"g",id:14},{t:"t",c:" ni. Eta zurea izango da errua. Laster ekarri beharko ditu, bestela, zuk liburu berriak erosi beharko "},{t:"g",id:15},{t:"t",c:"."},
+    ],questions:{
+      1:{o:["da","du","naiz"],c:"du"},2:{o:["da","zaio","du"],c:"da"},3:{o:["zuen","nago","dira"],c:"dira"},
+      4:{o:["duzu","zara","naiz"],c:"duzu"},5:{o:["da","du","duzu"],c:"du"},6:{o:["dira","dituzu","zaio"],c:"dira"},
+      7:{o:["ditut","dugu","naiz"],c:"ditut"},8:{o:["da","diozu","dizkit"],c:"dizkit"},9:{o:["dizkiot","naiz","du"],c:"dizkiot"},
+      10:{o:["dizkizut","dizkiozu","diet"],c:"dizkiozu"},11:{o:["dago","du","dauka"],c:"dago"},12:{o:["naiz","duzue","dira"],c:"dira"},
+      13:{o:["du","dute","dizkio"],c:"dizkio"},14:{o:["naiz","dut","dugu"],c:"naiz"},15:{o:["zara","diozu","dituzu"],c:"dituzu"},
+    }},
+    {title:"Bigarren ariketa",segments:[
+      {t:"t",c:"Ester: Arratsalde on! Jonen "},{t:"g",id:16},{t:"t",c:" zara, ezta?"},
+      {t:"b"},{t:"t",c:"Lara: Bai."},
+      {t:"b"},{t:"t",c:"Ester: Ni Unairen ama naiz. Gure semea eta zurea "},{t:"g",id:17},{t:"t",c:" dira."},
+      {t:"b"},{t:"t",c:"Lara: Ezagutu zaitut, bai. Zer gertatzen da?"},
+      {t:"b"},{t:"t",c:"Ester: Medikutara joan behar dut, eta ez dut Unai "},{t:"g",id:18},{t:"t",c:" utzi nahi."},
+      {t:"b"},{t:"t",c:"Lara: Lasai, utzi "},{t:"g",id:19},{t:"t",c:". Hemen ondo egongo da, jolasean."},
+      {t:"b"},{t:"t",c:"Ester: Segituan etorriko naiz bueltan. Eskertzen dizut "},{t:"g",id:20},{t:"t",c:", benetan."},
+      {t:"b"},{t:"t",c:"Lara: Ez da ezer, neska! Horretarako gaude."},
+    ],questions:{
+      16:{o:["laguna","ama","amama"],c:"ama"},17:{o:["klaseak","irakasleak","lagunak"],c:"lagunak"},
+      18:{o:["zurekin","lagunak","bakarrik"],c:"bakarrik"},19:{o:["zurekin","nirekin","bakarrik"],c:"nirekin"},
+      20:{o:["mesedea","barkamena","gauza"],c:"mesedea"},
+    }},
+    {title:"Hirugarren ariketa",segments:[
+      {t:"t",c:"Pirinioak eder-ederrak dira, ezta? Eta Irati aldea ere bai, ezta? Bai, dudarik gabe, Euskal Herriko paisaia "},{t:"g",id:21},{t:"t",c:" eta handienak ikusi "},{t:"g",id:22},{t:"t",c:" ditugu Pirinioetan."},
+      {t:"b"},{t:"t",c:"Gure lagunek ere horixe "},{t:"g",id:23},{t:"t",c:" dute, eta Bilbo hiritik Iratiko basora joatea erabaki dute. Hango leku eta txoko ezkutuak ezagutu nahi dituzte. Aitor, Leire eta Julen bilbotarrak primeran ibiltzen ari dira, "},{t:"g",id:24},{t:"t",c:", leku politean, dena da ederra eta lasaia... baina nahikoa da gertaera "},{t:"g",id:25},{t:"t",c:" bat paradisua infernu bihurtzeko. Hiru lagunen bidaia erromantikoak, bat-batean, mundu izugarrian sartu eta amesgaiztoaren trazak hartuko ditu."},
+    ],questions:{
+      21:{o:["ibaiak","ederrenak","mendiak"],c:"ederrenak"},22:{o:["ahal","behar","ezin"],c:"ahal"},
+      23:{o:["pentsatu","ibili","ikusi"],c:"pentsatu"},24:{o:["nekatuta","oinez","poz-pozik"],c:"poz-pozik"},
+      25:{o:["interesgarri","beldurgarri","barregarri"],c:"beldurgarri"},
+    }},
+  ]},
+
+  A2:{total:25,sections:[
+    {title:"Lehenengo ariketa",segments:[
+      {t:"t",c:"Atzo arratsaldean Antzuolan "},{t:"g",id:1},{t:"t",c:". Antzuola Gipuzkoako herri bat da. Bergaratik hiru kilometrora dago eta Zumarragatik hamarren bat daude. Legazpik, Urretxuk, Oñatik eta Arrasatek ere "},{t:"g",id:2},{t:"t",c:" egiten dute Antzuolarekin."},
+      {t:"b"},{t:"t",c:"Ez "},{t:"g",id:3},{t:"t",c:" lehendik herri hau ezagutzen. Sarritan egiten dut autoz Zumarragatik Bergararako bidea, baina ez nintzen "},{t:"g",id:4},{t:"t",c:" Antzuolan sartu eta atzo izan nuen aukera."},
+      {t:"b"},{t:"t",c:"Orain hilabete batzuk antzuolar neska gazte bat "},{t:"g",id:5},{t:"t",c:". Arrasateko ikastolan izan zen. Ikastolak euskarari buruzko ikastaroa "},{t:"g",id:6},{t:"t",c:" eta ikastaroan "},{t:"g",id:7},{t:"t",c:" partaide izan "},{t:"g",id:8},{t:"t",c:". Bertan, adiskidetu ginen. Antzuolar gazte jator honek "},{t:"g",id:9},{t:"t",c:". Oso euskaltzalea da. Antzuolan euskarazko klaseak "},{t:"g",id:10},{t:"t",c:"."},
+      {t:"b"},{t:"g",id:11},{t:"t",c:" berarekin telefonoz hitz egin ondoren, Antzuolan "},{t:"g",id:12},{t:"t",c:" atzo arratsaldean. Anerekin arratsaldeko seietan Antzuolako "},{t:"g",id:13},{t:"t",c:" geratu nintzen. Ni Antzuolara pixka bat lehenago "},{t:"g",id:14},{t:"t",c:". Bostak hamar gutxiago edo izango ziren. "},{t:"g",id:15},{t:"t",c:" nahi nuen eta herrian gora "},{t:"g",id:16},{t:"t",c:" ibili nintzen: Han agertu zen Ane ere. Seiak bost gutxiago ziren. "},{t:"g",id:17},{t:"t",c:" herriko tabernara abiatu ginen. "},{t:"g",id:18},{t:"t",c:" taberna gozo eta alaia dute eta bertan oso giro jatorra dago. Barruan bero egiten zuen."},
+    ],questions:{
+      1:{o:["joan nintzen","egon nintzen","egon nuen"],c:"egon nintzen"},
+      2:{o:["muga","mugan","mugak"],c:"muga"},
+      3:{o:["zenuen","nuen","nintzen"],c:"nuen"},
+      4:{o:["beti","inoiz ez","inoiz"],c:"inoiz"},
+      5:{o:["ezagutu nuen","ezagutuko nuen","ezagutzen nuen"],c:"ezagutu nuen"},
+      6:{o:["antolatu zuten","antolatu zuen","antolatu zituen"],c:"antolatu zuen"},
+      7:{o:["biak","biek","biok"],c:"biok"},
+      8:{o:["ginen","genuen","ziren"],c:"ginen"},
+      9:{o:["Ane izena du","Ane deitzen du","Anek izena du"],c:"Ane izena du"},
+      10:{o:["eman du","ematen dute","ematen ditu"],c:"ematen ditu"},
+      11:{o:["Etzi","Herenegun","Datorren astean"],c:"Herenegun"},
+      12:{o:["elkartu ginen","elkartu genuen","elkartzen ginen"],c:"elkartu ginen"},
+      13:{o:["enparantzara","enparantza","enparantzan"],c:"enparantzan"},
+      14:{o:["heldu nintzen","heldu zen","heltzen nintzen"],c:"heldu nintzen"},
+      15:{o:["Ezagutzen","Ezagutu","Ezagutzeko"],c:"Ezagutu"},
+      16:{o:["herri behera","herrian behera","herrian behean"],c:"herrian behera"},
+      17:{o:["Agurtu aurretik","Agurtu zen","Agurtu ondoren"],c:"Agurtu ondoren"},
+      18:{o:["Gazteak","Gazteek","Gazteei"],c:"Gazteek"},
+    }},
+    {title:"Bigarren ariketa",segments:[
+      {t:"t",c:"Bartzelonak ibilgailuen zirkulazioa "},{t:"g",id:19},{t:"t",c:" nahi du, kutsadura handia bada. Bartzelonako Udalean, Airearen Kutsaduraren aurkako Mahaiko adituek ibilgailuen zirkulazioa mugatu nahi dute. Matrikula-zenbakia bakoitia edo "},{t:"g",id:20},{t:"t",c:" bada, horren arabera mugatu nahi dute, baina bakarrik "},{t:"g",id:21},{t:"t",c:" handia badago. Ekologia, Urbanismo eta Mugikortasuneko arduradunak, Janet Sanz alkateordeak, osteguneko prentsaurrekoan adierazi du autoak matrikula-zenbakiaren arabera zirkulatzeko muga proposamen bat dela, "},{t:"g",id:22},{t:"t",c:" aurkeztu duten neurrietako bat, eta neurri hori udalak aztertuko dituen proposamen artean dagoela. Udala pentsatzen ari da hirian sartzeko ibilgailu kopurua mugatzea, alde batetik, "},{t:"g",id:23},{t:"t",c:" erregulatuz eta, bestetik, VAO* izeneko bideak jarrita. Horrela, garraio publikoari lehentasuna eman nahi dio. Gainera, kanpokoek nola aparkatu ere arautu nahi du, zer egin hutsik doazen "},{t:"g",id:24},{t:"t",c:", eta kutsadura ordu nagusietan, goizeko 07.00etatik 11:00ak arte, zamalanak debekatu. Hori guztia kutsadura handia baldin bada. Udalak hurrengo hilabeteetan "},{t:"g",id:25},{t:"t",c:" ditu neurriok, eta agian urte-bukaerarako onartuko ditu."},
+    ],questions:{
+      19:{o:["erabili","mugatu","martxan jarri"],c:"mugatu"},
+      20:{o:["bikoitia","luzea","bikoitza"],c:"bikoitia"},
+      21:{o:["kea","kutsadura","zikinkeria"],c:"kutsadura"},
+      22:{o:["adituek","alkateak","udaltzainek"],c:"adituek"},
+      23:{o:["errepideak","semaforoak","auto ilarak"],c:"semaforoak"},
+      24:{o:["autobusekin","taxiekin","errepideekin"],c:"taxiekin"},
+      25:{o:["konponduko","abiatuko","aztertuko"],c:"aztertuko"},
+    }},
+  ]},
+
+  B1:{total:25,sections:[
+    {title:"Lehenengo ariketa",segments:[
+      {t:"t",c:"Herri txiki batean, neska aberats bat bizi zen. Polita ere bazen eta "},{t:"g",id:1},{t:"t",c:" nahi zuten emaztetzat."},
+      {t:"b"},{t:"t",c:"Aita-amak bizi izan ziren bitartean, "},{t:"g",id:2},{t:"t",c:" ez zen ausartzen haren eskua eskatzera joaten. Baina, neska umezurtz geratu zenean, ama, amona eta izeko asko joan ziren beren seme eta ilobentzat emaztetzat "},{t:"g",id:3},{t:"t",c:"."},
+      {t:"b"},{t:"t",c:"Neska "},{t:"g",id:4},{t:"t",c:" ere ezkondu nahian zebilen. Baina, aberatsa izanik, harro samarra zen eta ez zuen "},{t:"g",id:5},{t:"t",c:" ezkondu nahi."},
+      {t:"b"},{t:"t",c:"Goizean goiz, egunero, joaten zen elizara, eta Ama Birjinaren aldare "},{t:"g",id:6},{t:"t",c:" belaunikaturik egoten zen luzaro, denbora luzez."},
+      {t:"b"},{t:"t",c:"Herriko sakristaua ere andregai bila "},{t:"g",id:7},{t:"t",c:" aspalditik. Ez zen oso gazte gure sakristau hori. Berak ere neska aberatsa nahi zuen beretzat, "},{t:"g",id:8},{t:"t",c:" pobrea izanik, ez zen ausartzen haren eskua eskatzera joaten. Oso argia zen sakristaua, eta "},{t:"g",id:9},{t:"t",c:" zer asmatu zuen neska harekin ezkontzeko."},
+      {t:"b"},{t:"g",id:10},{t:"t",c:", neska baino lehen sartu zen elizan eta Ama Birjina aldare ostean gorde zen. Etorri zen neska eta, egunero bezala, sakristauak "},{t:"g",id:11},{t:"t",c:" moduan, erregutu zion Ama Birjinari:"},
+      {t:"b"},{t:"t",c:"– Ama, Ama maitea, senargai on bat nahi dut, zure gogokoa den senargaia."},
+      {t:"b"},{t:"t",c:"Ostetik, sakristauak erantzun zion:"},
+      {t:"b"},{t:"t",c:"– Sakristaua duzu beste edozein baino "},{t:"g",id:12},{t:"t",c:"."},
+      {t:"b"},{t:"t",c:"Ama Birjinaren gogoa zein zen bazekiela eta, pozik etxeratu zen neska gaztea. Egun hartan bertan aberatsaren neskame bat sakristauaren etxera joan eta esan zion honi:"},
+      {t:"b"},{t:"t",c:"– Krispin, ezkonduko al "},{t:"g",id:13},{t:"t",c:" neska aberatsarekin?"},
+      {t:"b"},{t:"t",c:"– Bai, ezkonduko "},{t:"g",id:14},{t:"t",c:"… baina… badakizu… ni oso pobrea naiz…; goian zerua eta behean… sakristia eta soro txiki bat "},{t:"g",id:15},{t:"t",c:" ez dut…"},
+      {t:"b"},{t:"t",c:"Ez du axolarik Krispin. Zurekin izan ezik beste inorekin ez du ezkondu nahi."},
+      {t:"b"},{t:"t",c:"– Horrela, bada, \"Zeruak nahi duena gerta bedi Lurrean\". esan zuen sakristauak."},
+      {t:"b"},{t:"t",c:"Handik hilabetera ezkondu ziren, zein baino zein pozago."},
+    ],questions:{
+      1:{o:["edozein","asko","askok","edozeinek"],c:"askok"},
+      2:{o:["inor","norbait","bat","inor ez"],c:"inor"},
+      3:{o:["eskaria","eskaintzera","ezkutatzera","eskatzera"],c:"eskatzera"},
+      4:{o:["hau","bera","hori","hura"],c:"hura"},
+      5:{o:["edozeinekin","edozein","norbaitekin","inorekin"],c:"edozeinekin"},
+      6:{o:["atzean","azpian","ondoan","aurrean"],c:"aurrean"},
+      7:{o:["zebiltzan","zetorren","zebilen","zetozen"],c:"zebilen"},
+      8:{o:["aldiz","ostera","berriz","baina"],c:"baina"},
+      9:{o:["hara","zera","hor","hemen hona"],c:"hara"},
+      10:{o:["Egun batetan","Egun honetan","Egun bat","Egun batean"],c:"Egun batean"},
+      11:{o:["entzun zion","entzun zuen","entzuteko","entzutera"],c:"entzuteko"},
+      12:{o:["egokiagoa","hobe","aproposena","hobeto"],c:"egokiagoa"},
+      13:{o:["zara","zinateke","zinen","zinatekeen"],c:"zinateke"},
+      14:{o:["nintzateke","nintzen","nintzatekeela","naiz"],c:"nintzateke"},
+      15:{o:["besterik","baina","bakarrik","ere"],c:"besterik"},
+    }},
+    {title:"Bigarren ariketa",segments:[
+      {t:"t",c:"Nazioartean, Malariaren Aurkako Nazioarteko Eguna dugu apirilaren 25.a. Oso gaitz hilgarria da malaria. Urtean 430.000 heriotza "},{t:"g",id:16},{t:"t",c:" ditu, batez ere Afrikan. Ez da orain artean malaria sendatzeko "},{t:"g",id:17},{t:"t",c:" izan, baina txerto berri batek itxaropena piztu du. Ghana, Kenya eta Malawi herrialdeetan, datorren urtetik aurrera, txerto berria "},{t:"g",id:18},{t:"t",c:" hasiko dira programa pilotu bati "},{t:"g",id:19},{t:"t",c:"."},
+      {t:"b"},{t:"t",c:"Malariari "},{t:"g",id:20},{t:"t",c:" egiteko sortu duten lehen txertoa da, GSK konpainia farmazeutikoak eta Bill Gates Fundazioak garatu dute. Hala jakinarazi du Munduko Osasun Erakundeak. Ghana, Kenya eta Malawi herrialdeak aukeratu dituzte gizakietan lehen proba handia egiteko, eta haurrak izango dituzte helburu. Bost eta hamazazpi hilabeteko haurtxoei jarriko diete txerto berria datorren urtetik aurrera. Malariak, urtean 430.000 heriotza eragiten ditu, gehien-gehienak Saharaz azpiko Afrikan, eta biktima gehienak adin txikikoak izaten dira. Anopheles "},{t:"g",id:21},{t:"t",c:" eltxoak kutsatzen du gaitza eta oso hilgarria da: gaixoen % 80 hil egiten da. Sukar altua, buruko eta giharretako mina eta beherakoa izaten dira "},{t:"g",id:22},{t:"t",c:" sintomak. Orain arte sendatzerik izan ez bada ere, prebentzio-neurriei "},{t:"g",id:23},{t:"t",c:", paludismo-kasu berriak % 20 murriztu dira azken bost urteetan. Esaterako, lotarako moskitoak "},{t:"g",id:24},{t:"t",c:" sare soil bat erabiltzea edota gelan intsektizida botatzea nahikoa izaten da anopheles "},{t:"g",id:25},{t:"t",c:" ziztada ekiditeko. Afrikako eskualde txiroenetan, baina, luxua dira, bai sarea eta bai intsektizida."},
+    ],questions:{
+      16:{o:["eragiten","probokatzen","zirikatzen"],c:"eragiten"},
+      17:{o:["oztoporik","modua","biderik"],c:"biderik"},
+      18:{o:["ziztatzen","jartzen","ezartzen"],c:"jartzen"},
+      19:{o:["zorionez","esker","eskerrak"],c:"esker"},
+      20:{o:["aurrez aurre","aurre","borrokatu"],c:"aurre"},
+      21:{o:["izeneko","izendun","izenpean"],c:"izeneko"},
+      22:{o:["ohiko","arruntak","ohizko"],c:"ohiko"},
+      23:{o:["erantsiz","esker","txertatuz"],c:"esker"},
+      24:{o:["uxatzeko","erakartzeko","kanporatzeko"],c:"uxatzeko"},
+      25:{o:["eltxoaren","txertoaren","malariaren"],c:"eltxoaren"},
+    }},
+  ]},
+
+  B2:{total:25,sections:[
+    {title:null,segments:[
+      {t:"t",c:"Medikuntza tradizionalarekin sendatzen ez direlako edota sendatzeko beste modu batzuk daudela sinesten dutelako, gero eta gehiago dira bestelako terapiak probatzen dituzten gaixoak. Haien jatorria aspaldikoa da, eta aspaldi ziren gurean sortu, baina azken hamarkadetan hasi dira indarra hartzen. Terapia neurala, homeopatia eta barrearen terapia dira horien hiru adibide esanguratsu. Betiko medikuntzako tratamenduen osagarri moduan, edo bakarrik, gaixotasun asko sendatzeko edo arintzeko gai direla erakutsi dute, bai fisikoak eta bai psikikoak. Askorentzat, hala ere, ezezagunak dira oraindik ere."},
+      {t:"b"},{t:"t",c:"Urteetan izan zituen buruko minak kendu zitzaizkion arrebari. "},{t:"g",id:1},{t:"t",c:" egin, eta ikusi zuten prokainari esker sendatu zela. Hortik "},{t:"g",id:2},{t:"t",c:", terapia garatzen hasi ziren."},
+      {t:"b"},{t:"t",c:"Terapia neurala holistikoa da, hau da, integrala. Nerbio sistema zentrala dago oinarrian. "},{t:"g",id:3},{t:"t",c:", hark kontrolatzen ditu gorputzeko funtzio guztiak. Sistema hori milaka nerbio-bukaeraz osatua dago. Horietako bat blokeatzen denean, hari "},{t:"g",id:4},{t:"t",c:" gorputzaren funtzioak huts egiten du. Hala, gaixotu egiten gara. Terapia neuralak prokaina duten injekzioak erabiltzen ditu nerbio-bukaera horiek desblokeatzeko. Horri esker, berriro "},{t:"g",id:5},{t:"t",c:" bezala funtzionatzen hasiko da blokeatuta zegoen nerbioa: \"Prokainak ez du sendatzen, baizik eta gorputzari behar bezala funtzionatzeko dituen mekanismoak "},{t:"g",id:6},{t:"t",c:" laguntzen dio\". "},{t:"g",id:7},{t:"t",c:" kontuan hartuta, lehendabizi blokeoa non dagoen jakin behar da. "},{t:"g",id:8},{t:"t",c:", duen arazoaz gain, aldez aurretik izan dituen osasun arazoez galdetzen zaio gaixoari."},
+      {t:"b"},{t:"t",c:"Behin hori jakinda, terapiak nahiko azkar funtzionatzen du. \"Hala ez bada, "},{t:"g",id:9},{t:"t",c:", denbora gehiago beharko da. Hori dela eta, gaixoei ez diet sendatzeko epe "},{t:"g",id:10},{t:"t",c:" ematen\". Baina bigarren mailako ondoriorik sortzen ez "},{t:"g",id:11},{t:"t",c:", terapia neuralak intsulina "},{t:"g",id:12},{t:"t",c:" jarraitu beharko du diabetesaren kasuan. Edozeinek erabil dezake: haurrek, adinekoek, haurdun dauden emakumeek…"},
+      {t:"b"},{t:"t",c:"Samuel Hahnemann medikuak erabili zuen lehen aldiz homeopatia XVII. mende amaieran. Hipokratesek "},{t:"g",id:13},{t:"t",c:", osasuntsu dagoen pertsona batengan sintomak sortzen dituen substantzia bat sendatzeko gai da. \"Medikuntza tradizionalean "},{t:"g",id:14},{t:"t",c:", homeopatian erabiltzen ditugun botikak osasuntsu "},{t:"g",id:15},{t:"t",c:" pertsonekin probatzen ditugu, gaixoei eman aurretik\". Botika homeopatikoak animalia, landare eta mineral jatorriko substantziekin egiten dira. "},{t:"g",id:16},{t:"t",c:", oso dosi txikitan ematen da. "},{t:"g",id:17},{t:"t",c:", edozeinek erabil dezake."},
+      {t:"b"},{t:"t",c:"Homeopatiara jotzen duten gaixo gehienek gaixotasun kronikoak dituzte. Askotan "},{t:"g",id:18},{t:"t",c:" datoz, sendatu ezin direlako. \"Gaixoa "},{t:"g",id:19},{t:"t",c:" jota badator, nik erietxera bidaliko dut\". Hori bai, ebakuntza eskatzen duten hainbat gaixotasunen sintomak "},{t:"g",id:20},{t:"t",c:" ditzake."},
+      {t:"b"},{t:"t",c:"Tratamendua eraginkorra izan "},{t:"g",id:21},{t:"t",c:", behar bezala hartu behar da. Gainera, tratamendua hartu baino ordubete lehenago eta "},{t:"g",id:22},{t:"t",c:" ezin da ezer jan edo edan. Jakiek eta edariek dituzten hainbat substantzia "},{t:"g",id:23},{t:"t",c:" izugarri gutxitzen dute tratamenduaren eragina. Badira, homeopatak izan ez arren, terapia aplikatzen "},{t:"g",id:24},{t:"t",c:": \"Gaixoei kontuz ibiltzea aholkatuko "},{t:"g",id:25},{t:"t",c:"\"."},
+    ],questions:{
+      1:{o:["frogak","probak","bromak","drogak"],c:"frogak"},
+      2:{o:["abiatutako","abiatzen","abiatuta","abiatuko"],c:"abiatuta"},
+      3:{o:["nolanahi ere","Edonola ere","Izan ere","Oraindik ere"],c:"Izan ere"},
+      4:{o:["doakion","datorkion","dakarkion","dagokion"],c:"dagokion"},
+      5:{o:["beharreko","behar dena","behar","beharrezko"],c:"behar"},
+      6:{o:["berreskuratuz","berreskuratzen","berreskuratu","berreskuratuko"],c:"berreskuratzen"},
+      7:{o:["Hori guztia","Guzti hori","Horrek guztiak","Guztia hori"],c:"Hori guztia"},
+      8:{o:["Gainera","Horrenbestez","Bestalde","Betiere"],c:"Horrenbestez"},
+      9:{o:["beraz","ondorioz","hortaz","ordea"],c:"ordea"},
+      10:{o:["zehatz bat","zehatz","zehatzik","zehatzarik"],c:"zehatzik"},
+      11:{o:["duenez gero","duen","duenerako","duenetik"],c:"duenez gero"},
+      12:{o:["hartu","hartzen","hartzea","hartuz"],c:"hartzen"},
+      13:{o:["probatu zuenez","probatu zuenez gero","frogatu zuenez","frogatuta"],c:"frogatu zuenez"},
+      14:{o:["bezala ez","ez bezala","bezain ez","ez bezain"],c:"ez bezala"},
+      15:{o:["diren","den","dauden","dagoen"],c:"dauden"},
+      16:{o:["Gainerakoak","Gainera","Gainean","Adibidez"],c:"Gainera"},
+      17:{o:["Amaitzeko","Hasteko","Beraz","Hainbeste"],c:"Beraz"},
+      18:{o:["pozarren","algaraka","alai","etsita"],c:"etsita"},
+      19:{o:["apendizitis","apendizitisak","apendizis","apendizitiseko"],c:"apendizitisak"},
+      20:{o:["astundu","lortu","eskuratu","arindu"],c:"arindu"},
+      21:{o:["dadin","zedin","daitezen","dezan"],c:"dadin"},
+      22:{o:["beranduago","atzoko","gaurko","geroago"],c:"geroago"},
+      23:{o:["kimikoak","kimikoek","kimikok","kimikoez"],c:"kimikok"},
+      24:{o:["duten","dutenik","dutela","dutenak"],c:"dutenak"},
+      25:{o:["nien","nioke","nieke","niekeen"],c:"nieke"},
+    }},
+  ]},
+
+  C1:{total:25,sections:[
+    {title:null,segments:[
+      {t:"t",c:"Jabego intelektualaren aurkako erasoen eta hura babesteko neurrien inguruko eztabaidak gero eta "},{t:"g",id:1},{t:"t",c:" handiagoa dute. Batzuk egile eskubideen defentsan oinarrituta, sormen lanei copyright lizentziak ezartzearen alde agertzen dira; "},{t:"g",id:2},{t:"t",c:" gero eta lagun gehiagok egiten du eredu eskuzabalagoen aldeko "},{t:"g",id:3},{t:"t",c:"."},
+      {t:"b"},{t:"t",c:"Aurrerapen teknologikoek, digitalizazioak "},{t:"g",id:4},{t:"t",c:", eta Internetek sormen lanak kopiatzeko, zabaltzeko eta eransteko bideak izugarri erraztu dituzte. Ondorioz, autore eta erabiltzaile ugari gustura agertu da ezagutza elkarren artean banatzeko aukerak areagotu direlako; baina hori mehatxu moduan ikusten "},{t:"g",id:5},{t:"t",c:" ere badago. Azken horiek jabetza intelektualak gero eta eraso gehiago jasaten duela diote eta egile eskubideen defentsa "},{t:"g",id:6},{t:"t",c:", kontsumitzaileen eskubideak murrizten dituzten neurrien alde egiten dute."},
+      {t:"b"},{t:"t",c:"Askoren ustez, ordea, copyrightak ez ditu egileen eskubideak defendatzen, multinazional handienak "},{t:"g",id:7},{t:"t",c:". Kultura gizakiok gozatzeko sortutako ondasuna da, eta, "},{t:"g",id:8},{t:"t",c:", lizentzia horrek hori egiten omen du: bakar batzuen poltsikoak bete eta kulturara hurbiltzeko ateak itxi. "},{t:"g",id:9},{t:"t",c:", gero eta obra gehiagok daramate copyleft "},{t:"g",id:10},{t:"t",c:" lizentzia. Izenak berak argi erakusten du zuzenean egiten duela "},{t:"g",id:11},{t:"t",c:" copyrightarekin. Copyrightak erabiltzaileei hainbat muga ezartzen die, eta horiek ezabatu nahi ditu copyleftak, obra aberastea eta "},{t:"g",id:12},{t:"t",c:" jende gehienarengana heltzea delako bere xedea. Copylefta erabilita, nahi duen "},{t:"g",id:13},{t:"t",c:" obra originalaren gainean aldaketak egin eta bertso berri hori zabal dezake eta, horrez gainera, hirugarren erabiltzaile batek, "},{t:"g",id:14},{t:"t",c:", bigarren bertsioa aldatzeko aukera du. Lizentzia horren tasuna horretan "},{t:"g",id:15},{t:"t",c:": obra artistikoak babestean eta sustatzean. Egileak erabakitzen du bere obra zein neurritaraino kopiatu, ezagutarazi eta "},{t:"g",id:16},{t:"t",c:" dezaketen gainerakoek."},
+      {t:"b"},{t:"t",c:"Copyleft mugimendua 80ko hamarkadaren amaieran sortu zen software librearen inguruko programatzaileei esker. Arte Librearen Lizentzia Internet eta software librearen esparruan "},{t:"g",id:17},{t:"t",c:", mota guztietako obrak babes "},{t:"g",id:18},{t:"t",c:": koadroak, eskulturak, kantuak, web guneak…"},
+      {t:"b"},{t:"t",c:"Creative Commons (CC) irabazi asmorik gabeko elkartea da. "},{t:"g",id:19},{t:"t",c:", bere obrak libreki erabiliak izatea nahi duen autoreari babes legala ematen dioten copyleft lizentziak garatu ditu. CC zeinuak, egileak bere eskubideei "},{t:"g",id:20},{t:"t",c:" arren, erabilera batzuetarako baimena ematen duela adierazten du. Autoreak erabakitzen du bere obra zertarako eta nola erabil dezaketen, eta horretarako Creative Commons erakundeak moldatutako lizentzia libreen zerrenda erabili ohi du laguntza "},{t:"g",id:21},{t:"t",c:". CCk banatzen dituen lizentzien artean eskuduntza lizentziak ematen du aukera gehien, obra originalaren autorea aipatuz gero, obra hori nolanahi kopia, eralda eta zabal "},{t:"g",id:22},{t:"t",c:". Badago aldaketarik onartzen ez duen lizentziarik ere, lana ezagutaraztea onesten duena, ez hura aldatzea, "},{t:"g",id:23},{t:"t",c:"."},
+      {t:"b"},{t:"t",c:"Bestalde, obra originalaren egileak aukeraturiko lizentzia edozein "},{t:"g",id:24},{t:"t",c:", badira ezinbestean errespetatu beharreko baldintza batzuk. Gainera, lizentzia libreko obra bat ezin da beste lizentzia desberdin bat, copyrighta adibidez, duen obra batekin "},{t:"g",id:25},{t:"t",c:"."},
+    ],questions:{
+      1:{o:["izenpe","egitasmo","oihartzun","zarata"],c:"oihartzun"},
+      2:{o:["alabaina","hau da","hala nola","esaterako"],c:"alabaina"},
+      3:{o:["aholkua","banaketa","antolamendua","hautua"],c:"hautua"},
+      4:{o:["bide batez","batik bat","behingoz","bederen"],c:"batik bat"},
+      5:{o:["duenak","duenik","duela","duen"],c:"duenik"},
+      6:{o:["aitzakiatzat hartuta","aitzakitzat jota","aitzakien gisa","aitzakiren tankera"],c:"aitzakiatzat hartuta"},
+      7:{o:["baizik eta","bezainbat","baino","beste"],c:"baino"},
+      8:{o:["dena dela","hain zuzen ere","ere bai","baliteke"],c:"hain zuzen ere"},
+      9:{o:["Hori dela eta","Aldiz","Bestela","Alderantziz"],c:"Hori dela eta"},
+      10:{o:["dagokion","deritzon","dakarkion","darion"],c:"deritzon"},
+      11:{o:["huts","uko","talka","aurre"],c:"talka"},
+      12:{o:["ahalik eta","hainbat eta","zenbat eta","orduan eta"],c:"ahalik eta"},
+      13:{o:["edozein","denek","edonor","orok"],c:"orok"},
+      14:{o:["halaber","halere","baita","hargatik"],c:"halaber"},
+      15:{o:["dabil","dakar","datza","doakio"],c:"datza"},
+      16:{o:["bestelakotu","baieztatu","zapuztu","saritu"],c:"bestelakotu"},
+      17:{o:["sortu denez","sortzeke","sortu ezean","sortuagatik"],c:"sortuagatik"},
+      18:{o:["litzateke","lezakete","lirateke","litezke"],c:"litezke"},
+      19:{o:["Besteak beste","Behinik behin","Hala-hola","Betez beste"],c:"Besteak beste"},
+      20:{o:["eutsi","itsatsi","igarri","iragazi"],c:"eutsi"},
+      21:{o:["ordez","gisa","truk","kontura"],c:"gisa"},
+      22:{o:["badaiteke","badaiteke ere","baitaiteke","daitekeenentz"],c:"baitaiteke"},
+      23:{o:["baizik","baino","ordea","ordez"],c:"ordea"},
+      24:{o:["izan ezik","izanik ere","ez ezik ere","izateagatik"],c:"izanik ere"},
+      25:{o:["saihestu","ekin","uztartu","jardun"],c:"uztartu"},
+    }},
+  ]},
+};
+
+let answers={}, timerInterval=null, secondsLeft=1200, userName="", userEmail="", selectedLevel=null, openGap=null;
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('exam-screen').style.display='none';
+  const el=document.getElementById(id);
+  if(id==='exam-screen'){el.style.display='flex';}
+  else{el.classList.add('active');}
+}
+
+function goToLevel(){
+  answers={}; secondsLeft=1200; openGap=null;
+  clearInterval(timerInterval);
+  if(timerInterval) clearInterval(timerInterval);
+  document.getElementById('timer').textContent='20:00';
+  document.getElementById('timer').className='timer';
+  renderLevelButtons();
+  showScreen('level-screen');
+}
+
+function renderLevelButtons(){
+  const container=document.getElementById('level-buttons');
+  container.innerHTML='';
+  ["A1","A2","B1","B2","C1"].forEach(lv=>{
+    const btn=document.createElement('button');
+    btn.className='level-btn'+(selectedLevel===lv?' selected':'');
+    btn.innerHTML=`<span>${lv} Maila</span>${selectedLevel===lv?'<span>✓</span>':''}`;
+    btn.onclick=()=>{selectedLevel=lv;renderLevelButtons();
+      const sb=document.getElementById('start-exam-btn');
+      sb.style.background='#6b4fa8';sb.style.cursor='pointer';};
+    container.appendChild(btn);
+  });
+}
+
+function goToStart(){
+  const n=document.getElementById('inp-name').value.trim();
+  const e=document.getElementById('inp-email').value.trim();
+  const err=document.getElementById('form-error');
+  if(!n){err.textContent='Mesedez, idatzi zure izena.';err.style.display='block';return;}
+  if(!e||!e.includes('@')){err.textContent='Mesedez, idatzi helbide elektroniko baliogarri bat.';err.style.display='block';return;}
+  err.style.display='none';
+  userName=n; userEmail=e;
+  selectedLevel=null;
+  renderLevelButtons();
+  showScreen('level-screen');
+}
 
 function startExam(){
-  const n=document.getElementById("inp-name").value.trim();
-  const e=document.getElementById("inp-email").value.trim();
-  const err=document.getElementById("form-error");
-  if(!n){err.textContent="Mesedez, idatzi zure izena.";err.style.display="block";return;}
-  if(!e||!e.includes("@")){err.textContent="Mesedez, idatzi helbide elektroniko baliogarri bat.";err.style.display="block";return;}
-  userName=n; userEmail=e;
-  document.getElementById("start").style.display="none";
-  document.getElementById("exam").style.display="block";
-  renderText();
+  if(!selectedLevel) return;
+  answers={}; secondsLeft=1200; openGap=null;
+  document.getElementById('exam-title').textContent=selectedLevel+' Mailaketa proba';
+  renderExam();
+  showScreen('exam-screen');
   timerInterval=setInterval(tick,1000);
 }
 
 function tick(){
   secondsLeft--;
-  const m=String(Math.floor(secondsLeft/60)).padStart(2,"0");
-  const s=String(secondsLeft%60).padStart(2,"0");
-  const t=document.getElementById("timer");
+  const m=String(Math.floor(secondsLeft/60)).padStart(2,'0');
+  const s=String(secondsLeft%60).padStart(2,'0');
+  const t=document.getElementById('timer');
   t.textContent=`${m}:${s}`;
-  t.className="timer"+(secondsLeft<=60?" urgent":"");
+  t.className='timer'+(secondsLeft<=60?' urgent':'');
   if(secondsLeft<=0){clearInterval(timerInterval);submitExam();}
 }
 
-function renderText(){
-  const container=document.getElementById("text-body");
-  container.innerHTML="";
-  segments.forEach(seg=>{
-    if(seg.t==="break"){container.appendChild(document.createElement("br"));container.appendChild(document.createElement("br"));}
-    else if(seg.t==="text"){container.appendChild(document.createTextNode(seg.c));}
-    else if(seg.t==="gap"){
-      const wrap=document.createElement("span");
-      wrap.style.cssText="display:inline-block;position:relative;vertical-align:middle";
-      const btn=document.createElement("button");
-      btn.id=`gap-btn-${seg.id}`;
-      btn.className="gap-btn"+(answers[seg.id]?" selected":"");
-      btn.textContent=answers[seg.id]||`_${seg.id}_`;
-      btn.onclick=()=>toggleDropdown(seg.id);
-      const dd=document.createElement("div");
-      dd.id=`dd-${seg.id}`;
-      dd.className="dropdown";
-      questions[seg.id].opts.forEach(opt=>{
-        const o=document.createElement("div");
-        o.className="opt"+(answers[seg.id]===opt?" active":"");
-        o.textContent=opt;
-        o.onclick=()=>selectAnswer(seg.id,opt);
-        dd.appendChild(o);
-      });
-      wrap.appendChild(btn);
-      wrap.appendChild(dd);
-      container.appendChild(wrap);
-    }
-  });
-  updateProgress();
-}
-
-function toggleDropdown(id){
-  if(openGap&&openGap!==id){document.getElementById(`dd-${openGap}`).classList.remove("open");}
-  const dd=document.getElementById(`dd-${id}`);
-  dd.classList.toggle("open");
-  openGap=dd.classList.contains("open")?id:null;
-}
-
-function selectAnswer(id,opt){
-  answers[id]=opt;
-  document.getElementById(`gap-btn-${id}`).textContent=opt;
-  document.getElementById(`gap-btn-${id}`).className="gap-btn selected";
-  document.getElementById(`dd-${id}`).classList.remove("open");
-  document.getElementById(`dd-${id}`).querySelectorAll(".opt").forEach(o=>{
-    o.className="opt"+(o.textContent===opt?" active":"");
-  });
-  openGap=null;
-  updateProgress();
+function getAllQuestions(){
+  const exam=EXAMS[selectedLevel];
+  const all={};
+  exam.sections.forEach(sec=>Object.assign(all,sec.questions));
+  return all;
 }
 
 function updateProgress(){
   const n=Object.keys(answers).length;
-  document.getElementById("progress-lbl").textContent=`${n}/25 erantzunda`;
-  document.getElementById("remaining-lbl").textContent=`${25-n} hutsune falta`;
-  document.getElementById("progress-fill").style.width=`${(n/25)*100}%`;
+  document.getElementById('progress-lbl').textContent=`${n}/25 erantzunda`;
+  document.getElementById('remaining-lbl').textContent=`${25-n} hutsune falta`;
+  document.getElementById('progress-fill').style.width=`${(n/25)*100}%`;
+}
+
+function renderExam(){
+  const exam=EXAMS[selectedLevel];
+  const container=document.getElementById('text-body');
+  container.innerHTML='';
+  exam.sections.forEach(sec=>{
+    const block=document.createElement('div');
+    block.className='text-block';
+    if(sec.title){
+      const title=document.createElement('div');
+      title.className='section-title';
+      title.textContent=sec.title;
+      block.appendChild(title);
+    }
+    sec.segments.forEach(seg=>{
+      if(seg.t==='b'){block.appendChild(document.createElement('br'));block.appendChild(document.createElement('br'));}
+      else if(seg.t==='t'){block.appendChild(document.createTextNode(seg.c));}
+      else if(seg.t==='g'){block.appendChild(createGap(seg.id,sec.questions));}
+    });
+    container.appendChild(block);
+  });
+  updateProgress();
+}
+
+function createGap(id, questions){
+  const wrap=document.createElement('span');
+  wrap.className='gap-wrap';
+  const ans=answers[id];
+  const btn=document.createElement('button');
+  btn.id=`gap-btn-${id}`;
+  btn.className='gap-btn'+(ans?' selected':'');
+  btn.textContent=ans||`_${id}_`;
+  btn.onclick=()=>toggleDropdown(id);
+  const dd=document.createElement('div');
+  dd.id=`dd-${id}`;
+  dd.className='dropdown';
+  questions[id].o.forEach(opt=>{
+    const o=document.createElement('div');
+    o.className='opt'+(ans===opt?' active':'');
+    o.textContent=opt;
+    o.onclick=()=>selectAnswer(id,opt);
+    dd.appendChild(o);
+  });
+  wrap.appendChild(btn);
+  wrap.appendChild(dd);
+  return wrap;
+}
+
+function toggleDropdown(id){
+  if(openGap&&openGap!==id){const prev=document.getElementById(`dd-${openGap}`);if(prev)prev.classList.remove('open');}
+  const dd=document.getElementById(`dd-${id}`);
+  dd.classList.toggle('open');
+  openGap=dd.classList.contains('open')?id:null;
+}
+
+function selectAnswer(id,opt){
+  answers[id]=opt;
+  const btn=document.getElementById(`gap-btn-${id}`);
+  if(btn){btn.textContent=opt;btn.className='gap-btn selected';}
+  const dd=document.getElementById(`dd-${id}`);
+  if(dd){dd.classList.remove('open');dd.querySelectorAll('.opt').forEach(o=>o.className='opt'+(o.textContent===opt?' active':''));}
+  openGap=null;
+  updateProgress();
 }
 
 function submitExam(){
   clearInterval(timerInterval);
-  const sc=Object.entries(questions).filter(([id,q])=>answers[+id]===q.correct).length;
-  const gr=sc>=20?"Zure maila C1.2 da.":sc>=15?"Zure maila C1.1 da.":"Egin B2 mailaketa proba.";
-  const gcol=sc>=20?"#3a7d5c":sc>=15?"#9a6e2a":"#b94a6a";
-  const gbg=sc>=20?"#e6f4ed":sc>=15?"#fdf4e3":"#fceef3";
-  const fecha=new Date().toLocaleString("es-ES");
+  const allQ=getAllQuestions();
+  const sc=Object.entries(allQ).filter(([id,q])=>answers[+id]===q.c).length;
+  const gr=GRADES[selectedLevel](sc);
+  const gcol=sc<=THRESHOLDS[selectedLevel]?'#b94a6a':'#3a7d5c';
+  const gbg=sc<=THRESHOLDS[selectedLevel]?'#fceef3':'#e6f4ed';
+  const fecha=new Date().toLocaleString('es-ES');
 
-  // Send to Google Sheets
-  const params=new URLSearchParams({fecha,nombre:userName,email:userEmail,puntuacion:`${sc}/25`,resultado:gr});
+  const params=new URLSearchParams({fecha,nombre:userName,email:userEmail,puntuacion:`${sc}/25`,resultado:gr,maila:selectedLevel});
   const img=new Image();
   img.src=`${SHEET_URL}?${params.toString()}`;
 
-  // Show result
-  document.getElementById("exam").style.display="none";
-  document.getElementById("result").style.display="block";
-  document.getElementById("res-user").textContent=`${userName} · ${userEmail}`;
-  const sb=document.getElementById("score-box");
-  sb.style.background=gbg; sb.style.border=`1px solid ${gcol}22`;
-  document.getElementById("score-num").style.color=gcol;
-  document.getElementById("score-num").innerHTML=`${sc}<span style="font-size:22px;font-weight:400;color:#7a6e8a">/${Object.keys(questions).length}</span>`;
-  document.getElementById("score-grade").style.color=gcol;
-  document.getElementById("score-grade").textContent=gr;
-  document.getElementById("prog-fill").style.background=gcol;
-  document.getElementById("prog-fill").style.width=`${(sc/25)*100}%`;
+  document.getElementById('result-title').textContent=selectedLevel+' Mailaketa proba — Emaitzak';
+  document.getElementById('result-user').textContent=`${userName} · ${userEmail}`;
+  const sb=document.getElementById('score-box');
+  sb.style.background=gbg; sb.style.border=`1px solid ${gcol}33`;
+  const sn=document.getElementById('score-num');
+  sn.style.color=gcol;
+  sn.innerHTML=`${sc}<span style="font-size:22px;font-weight:400;color:#7a6e8a">/25</span>`;
+  const sg=document.getElementById('score-grade');
+  sg.style.color=gcol; sg.textContent=gr;
+  const pf=document.getElementById('prog-fill');
+  pf.style.background=gcol; pf.style.width=`${(sc/25)*100}%`;
 
-  const grid=document.getElementById("corr-grid");
-  grid.innerHTML="";
-  Object.entries(questions).forEach(([id,q])=>{
-    const ans=answers[+id];
-    const ok=ans===q.correct;
-    const d=document.createElement("div");
-    d.className="corr-item";
-    d.style.cssText=`border:1.5px solid ${ok?"#c9b8ec":"#fceef3"};background:${ok?"#e6f4ed":"#fceef3"}`;
-    d.innerHTML=`<div class="corr-id">_${id}_</div>${!ok&&ans?`<div class="corr-wrong" style="color:#b94a6a">${ans}</div>`:""}<div class="corr-right" style="color:#3a7d5c">${q.correct} ✓</div>`;
-    grid.appendChild(d);
-  });
+  showScreen('result-screen');
 }
 
-document.addEventListener("click",e=>{
+function finish(){
+  window.open('https://matrikula.ulibarri.eus','_blank');
+  showScreen('bye-screen');
+}
+
+document.addEventListener('click',e=>{
   if(openGap&&!e.target.closest(`#gap-btn-${openGap}`)&&!e.target.closest(`#dd-${openGap}`)){
-    document.getElementById(`dd-${openGap}`).classList.remove("open");
+    const dd=document.getElementById(`dd-${openGap}`);
+    if(dd)dd.classList.remove('open');
     openGap=null;
   }
 });
+
+// Init
+renderLevelButtons();
+document.getElementById('start-exam-btn').onclick=startExam;
+document.querySelector('#start-screen .btn-primary').onclick=goToStart;
 </script>
 </body>
 </html>
